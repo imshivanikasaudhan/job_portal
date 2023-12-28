@@ -1,4 +1,3 @@
-
 @extends('front.layouts.app')
 
 @section('main')
@@ -11,14 +10,14 @@
             <p class=mb-0 pb-0>{{ Session::get('success') }}</p>
 
         </div>
-            
+
         @endif
         @if(Session::has('error'))
         <div class="alert alert-danger">
             <p class=mb-0 pb-0>{{ Session::get('error') }}</p>
 
         </div>
-            
+
         @endif
         <div class="row d-flex justify-content-center">
             <div class="col-md-5">
@@ -32,26 +31,26 @@
                             @enderror" placeholder="example@example.com">
 
                             @error('email')
-                              <p class="invalid-feedback">{{ $message }}</p>                                
+                            <p class="invalid-feedback">{{ $message }}</p>
                             @enderror
 
-                        </div> 
+                        </div>
                         <div class="mb-3">
                             <label for="" class="mb-2">Password*</label>
                             <input type="password" name="password" id="password" class="form-control @error('password') is-invalid                                
                             @enderror" placeholder="Enter Password">
                             @error('password')
-                            <p class="invalid-feedback">{{ $message }}</p>                                
+                            <p class="invalid-feedback">{{ $message }}</p>
                             @enderror
-                        </div> 
+                        </div>
                         <div class="justify-content-between d-flex">
-                        <button class="btn btn-primary mt-2">Login</button>
+                            <button class="btn btn-primary mt-2">Login</button>
                             <a href="forgot-password.html" class="mt-3">Forgot Password?</a>
                         </div>
-                    </form>                    
+                    </form>
                 </div>
                 <div class="mt-4 text-center">
-                    <p>Do not have an account? <a  href="{{ route('account.registration') }}">Register</a></p>
+                    <p>Do not have an account? <a href="{{ route('account.registration') }}">Register</a></p>
                 </div>
             </div>
         </div>
