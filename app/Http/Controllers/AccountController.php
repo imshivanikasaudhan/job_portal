@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Models\JobType;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Intervention\Image\ImageManager;
-use Intervention\Image\Drivers\Gd\Driver;
 
 class AccountController extends Controller
 {
@@ -128,45 +128,69 @@ class AccountController extends Controller
     }
 
 
-    public function updateProfilePic(Request $request)
-    {
+    public function updateProfilePic(Request $request){
         // dd($request->all());
         $id = Auth::user()->id;
 
-        $validator = Validator::make($request->all(), [
+        $validator = Validator::make($request->all(),[
             'image' => 'required|image'
         ]);
 
-        if ($validator->passes()) {
+        if($validator->passes()){
 
             $image = $request->image;
             $ext = $image->getClientOriginalExtension();
-            $imageName = $id . '_' . time() . '.' . $ext;
+            $imageName = $id.'_'.time().'.'.$ext;
             $image->move(public_path('/profile_pic/'), $imageName);
+            
+            User::where('id',$id)->update(['image' => $imageName]);
 
 
-            // Create a small thumbnail
-            $sourcePath = public_path('/profile_pic/'.$imageName);
-            $manager = new ImageManager(Driver::class);
-            $image = $manager->read($sourcePath);
-
-            // crop the best fitting 5:3 (600x360) ratio and resize to 600x360 pixel
-            $image->cover(150, 150);
-            $image->toPng()->save( public_path('/profile_pic/thumb'.$imageName));
-
-            User::where('id', $id)->update(['image' => $imageName]);
-
-
-            session()->flash('success', 'Profile picture updated successfully.');
+            session()->flash('success','Profile picture updated successfully.');
             return response()->json([
                 'status' => true,
                 'errors' => []
             ]);
-        } else {
+
+        }else{
             return response()->json([
                 'status' => false,
                 'errors' => $validator->errors()
             ]);
         }
     }
+
+    public function createJob(){
+
+        $categories = Category::orderBy('name','ASC')->where('status',1)->get();
+
+        $jobTypes = JobType::orderBy('name','ASC')->where('status',1)->get();
+
+        return view('front.account.job.create', [
+            'categories' => $categories,
+            'jobTypes' => $categories,
+        ]);
+    }
+
+
+    public function saveJob(Request $request){
+        
+        $rules = [
+            'title' => 'required',
+            'category' => 'required',
+            'jobType' => 'required',
+            'vacancy' => 'required',
+            'location' => 'required',
+            'description' => 'required',
+            'company_name' => 'required',
+        ];
+
+        $validator = Validator::make($request->all(),);
+    }
+
+
+
+   
+
+
 }

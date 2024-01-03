@@ -2,7 +2,7 @@
     <div class="s-body text-center mt-3">
 
         @if (Auth::user()->image != '')
-           <img src="{{asset('profile_pic/'.Auth::user()->image)}}" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+           <img src="{{asset('profile_pic/'.Auth::user()->image)}}" alt="avatar" class="rounded-circle img-fluid" style="width: 150px; height: 150px;">
 
         @else
         <img src="{{asset('assets/images/avatar7.png')}}" class="rounded-circle img-fluid" style="width: 150px;">
